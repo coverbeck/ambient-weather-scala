@@ -35,17 +35,17 @@
       "coords": {
         "geo": {
           "coordinates": [
-            -122.03343968403921,
-            36.95872901120626
+            -112.03343968403921,
+            26.95872901120626
           ],
           "type": "Point"
         },
         "elevation": 15.73502635955811,
         "location": "Santa Cruz",
-        "address": "720 Columbia St, Santa Cruz, CA 95060, USA",
+        "address": "Somewhere, Santa Cruz, CA 95060, USA",
         "coords": {
-          "lon": -122.03343968403921,
-          "lat": 36.95872901120626
+          "lon": -112.03343968403921,
+          "lat": 26.95872901120626
         }
       }
     }
