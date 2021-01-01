@@ -1,0 +1,53 @@
+[
+  {
+    "macAddress": "EC:FA:BC:4D:45:57",
+    "lastData": {
+      "dateutc": 1609454340000,
+      "tempinf": 66.7,
+      "humidityin": 42,
+      "baromrelin": 29.994,
+      "baromabsin": 30.062,
+      "tempf": 62.6,
+      "battout": 1,
+      "humidity": 47,
+      "winddir": 57,
+      "windspeedmph": 4.5,
+      "windgustmph": 5.8,
+      "maxdailygust": 10.3,
+      "hourlyrainin": 0,
+      "eventrainin": 0.252,
+      "dailyrainin": 0.15,
+      "weeklyrainin": 0.362,
+      "monthlyrainin": 3.26,
+      "totalrainin": 18.291,
+      "solarradiation": 237.21,
+      "uv": 2,
+      "feelsLike": 62.6,
+      "dewPoint": 42.08,
+      "feelsLikein": 66.7,
+      "dewPointin": 42.9,
+      "lastRain": "2020-12-31T15:30:00.000Z",
+      "tz": "America/Los_Angeles",
+      "date": "2020-12-31T22:39:00.000Z"
+    },
+    "info": {
+      "name": "My Weather Station",
+      "coords": {
+        "geo": {
+          "coordinates": [
+            -122.03343968403921,
+            36.95872901120626
+          ],
+          "type": "Point"
+        },
+        "elevation": 15.73502635955811,
+        "location": "Santa Cruz",
+        "address": "720 Columbia St, Santa Cruz, CA 95060, USA",
+        "coords": {
+          "lon": -122.03343968403921,
+          "lat": 36.95872901120626
+        }
+      }
+    }
+  }
+]
