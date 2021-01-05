@@ -12,15 +12,22 @@ object AmbientWeatherTest extends utest.TestSuite {
 
     val sysProps = System.getProperties.asScala
     if (sysProps.contains("apiKey") && sysProps.contains("appKey")) {
-      val devices = AmbientWeather(sysProps("appKey"), sysProps("apiKey")).devices
+      val authorizedAmbientWeather = AmbientWeather(sysProps("appKey"), sysProps("apiKey"))
+      val devices = authorizedAmbientWeather.devices
       if (devices.isFailure) println(devices)
       assert(devices.isSuccess)
+      // TODO: Restore this
+//      devices.map(ds => ds.foreach(d => authorizedAmbientWeather.deviceData(d.macAddress)))
     }
 
     val json = Source.fromResource("devices.json").getLines().mkString
     val devices = aw.devices(json)
     assert(devices.size == 1)
-    assert(devices(0).macAddress == "EC:FA:BC:4D:45:57")
+    val macAddress = devices(0).macAddress
+    assert(macAddress == "EC:FA:BC:4D:45:57")
+
+    val deviceDataJson = Source.fromResource("deviceData.json").getLines().mkString
+    println(aw.deviceDataFromJson(deviceDataJson))
   }
 
 }
