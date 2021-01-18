@@ -1,5 +1,6 @@
 package org.overbeck.weather
 
+import org.overbeck.weather.model.DeviceData
 import utest.Tests
 
 import scala.io.Source
@@ -13,11 +14,10 @@ object AmbientWeatherTest extends utest.TestSuite {
     val sysProps = System.getProperties.asScala
     if (sysProps.contains("apiKey") && sysProps.contains("appKey")) {
       val authorizedAmbientWeather = AmbientWeather(sysProps("appKey"), sysProps("apiKey"))
-      val devices = authorizedAmbientWeather.devices
-      if (devices.isFailure) println(devices)
-      assert(devices.isSuccess)
-      // TODO: Restore this
-//      devices.map(ds => ds.foreach(d => authorizedAmbientWeather.deviceData(d.macAddress)))
+      val devicesTry = authorizedAmbientWeather.devices
+      if (devicesTry.isFailure) println(devicesTry)
+      assert(devicesTry.isSuccess)
+      devicesTry.map(devices => devices.foreach(d => println(authorizedAmbientWeather.deviceData(d.macAddress))))
     }
 
     val json = Source.fromResource("devices.json").getLines().mkString
@@ -27,7 +27,8 @@ object AmbientWeatherTest extends utest.TestSuite {
     assert(macAddress == "EC:FA:BC:4D:45:57")
 
     val deviceDataJson = Source.fromResource("deviceData.json").getLines().mkString
-    println(aw.deviceDataFromJson(deviceDataJson))
+    val deviceData: Seq[DeviceData] = aw.deviceDataFromJson(deviceDataJson)
+    assert(deviceData.size == 2)
   }
 
 }

@@ -1,6 +1,7 @@
 package org.overbeck.weather
 
-import upickle.default.{macroRW, read, ReadWriter}
+import org.overbeck.weather.model.{Device, DeviceData}
+import upickle.default.read
 
 import scala.util.{Failure, Success, Try}
 
@@ -22,12 +23,10 @@ class AmbientWeather(private val appKey: String, private val apiKey: String) {
 
   def devices(json: String): Seq[Device] = read[Seq[Device]](json)
 
-  def deviceData(macAddress: String, limit: Int = 288, endDateMs: String = ""): Seq[DeviceData] = {
+  def deviceData(macAddress: String, limit: Int = 288, endDateMs: String = ""): Try[Seq[DeviceData]] = {
     val deviceDataUrl = s"${devicesUrl}/${macAddress}"
     val map = authMap + ("limit" -> limit.toString, "endDate" -> endDateMs)
-    val response = requests.get(deviceDataUrl, params = map)
-    println(response.text)
-    deviceDataFromJson(response.text)
+    Success(deviceDataFromJson(requests.get(deviceDataUrl, params = map).text))
   }
 
   def deviceDataFromJson(json: String): Seq[DeviceData]= OptionPickler.read[Seq[DeviceData]](json)
@@ -37,67 +36,5 @@ object AmbientWeather {
   def apply(appKey: String, apiKey: String) = new AmbientWeather(appKey, apiKey)
 }
 
-case class Info(name: String, coords: Coords)
-
-object Info {
-  implicit val rw: ReadWriter[Info] = macroRW
-}
-
-case class Coords(geo: Geo, elevation: Float, location: String, address: String, coords: CoordsPair)
-
-object Coords {
-  implicit val rw: ReadWriter[Coords] = macroRW
-}
-
-case class CoordsPair(lon: Float, lat: Float)
-
-case class Geo(coordinates: Array[Float], `type`: String)
-
-object Geo {
-  implicit val rw: ReadWriter[Geo] = macroRW
-}
 
 
-
-case class LastData(dateutc: Long,
-                    tempinf: Float,
-                    humidityin: Int,
-                    baromrelin: Float,
-                    baromabsin: Float,
-                    tempf: Float,
-                    battout: Int,
-                    humidity: Int,
-                    winddir: Int,
-                    windspeedmph: Float,
-                    windgustmph: Float,
-                    maxdailygust: Float,
-                    hourlyrainin: Float,
-                    eventrainin: Float,
-                    dailyrainin: Float,
-                    weeklyrainin: Float,
-                    monthlyrainin: Float,
-                    totalrainin: Float,
-                    solarradiation: Float,
-                    uv: Int,
-                    feelsLike: Float,
-                    dewPoint: Float,
-                    feelsLikein: Float,
-                    dewPointin: Float,
-                    lastRain: String,
-                    tz: String,
-                    date: String
-                   )
-
-object LastData {
-  implicit val rw: ReadWriter[LastData] = macroRW
-}
-
-case class Device(macAddress: String, lastData: LastData, info: Info)
-
-object Device {
-  implicit val rw: ReadWriter[Device] = macroRW
-}
-
-object CoordsPair {
-  implicit val rw: ReadWriter[CoordsPair] = macroRW
-}

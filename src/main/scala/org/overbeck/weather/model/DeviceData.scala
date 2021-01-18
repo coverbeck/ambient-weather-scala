@@ -1,4 +1,6 @@
-package org.overbeck.weather
+package org.overbeck.weather.model
+
+import org.overbeck.weather.OptionPickler
 
 case class DeviceData(dateutc: Long,
                       baromabsin: Double,
@@ -67,7 +69,6 @@ case class DeviceData(dateutc: Long,
                       totalrainin: Double,
                       // uv should be Int but see https://github.com/lrosenman/ambient/blob/19dbc288eb9acd7baa4205eab7adeb81a2b555c5/ambient.go#L92
                       uv: Double,
-
                       weeklyrainin: Double,
                       winddir: Int,
                       winddir_avg2m: Option[Int] = None,
