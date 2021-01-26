@@ -1,6 +1,6 @@
 name := "ambient-weather-scala"
-
-version := "0.1"
+organization := "org.overbeck"
+version := "0.0.1-SNAPSHOT"
 
 scalaVersion := "2.13.4"
 

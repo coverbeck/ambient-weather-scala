@@ -11,9 +11,11 @@ object AmbientWeatherTest extends utest.TestSuite {
     val aw = AmbientWeather("one", "two")
     assert(aw.devices.isFailure)
 
-    val sysProps = System.getProperties.asScala
-    if (sysProps.contains("apiKey") && sysProps.contains("appKey")) {
-      val authorizedAmbientWeather = AmbientWeather(sysProps("appKey"), sysProps("apiKey"))
+    val env = System.getenv.asScala
+    val ambientApiKey = "AMBIENT_API_KEY"
+    val ambientAppKey = "AMBIENT_APP_KEY"
+    if (env.contains(ambientApiKey) && env.contains(ambientAppKey)) {
+      val authorizedAmbientWeather = AmbientWeather(env(ambientAppKey), env(ambientApiKey))
       val devicesTry = authorizedAmbientWeather.devices
       if (devicesTry.isFailure) println(devicesTry)
       assert(devicesTry.isSuccess)
