@@ -1,4 +1,9 @@
 version: 2.1
+workflows:
+  build:
+    jobs:
+      - build:
+          context: Builds
 jobs:
   build:
     docker:
