@@ -1,5 +1,6 @@
 package org.overbeck.weather
 
+import org.overbeck.weather.model.DeviceData
 import utest.Tests
 
 import scala.io.Source
@@ -10,17 +11,26 @@ object AmbientWeatherTest extends utest.TestSuite {
     val aw = AmbientWeather("one", "two")
     assert(aw.devices.isFailure)
 
-    val sysProps = System.getProperties.asScala
-    if (sysProps.contains("apiKey") && sysProps.contains("appKey")) {
-      val devices = AmbientWeather(sysProps("appKey"), sysProps("apiKey")).devices
-      if (devices.isFailure) println(devices)
-      assert(devices.isSuccess)
+    val env = System.getenv.asScala
+    val ambientApiKey = "AMBIENT_API_KEY"
+    val ambientAppKey = "AMBIENT_APP_KEY"
+    if (env.contains(ambientApiKey) && env.contains(ambientAppKey)) {
+      val authorizedAmbientWeather = AmbientWeather(env(ambientAppKey), env(ambientApiKey))
+      val devicesTry = authorizedAmbientWeather.devices
+      if (devicesTry.isFailure) println(devicesTry)
+      assert(devicesTry.isSuccess)
+      devicesTry.map(devices => devices.foreach(d => println(authorizedAmbientWeather.deviceData(d.macAddress))))
     }
 
     val json = Source.fromResource("devices.json").getLines().mkString
     val devices = aw.devices(json)
     assert(devices.size == 1)
-    assert(devices(0).macAddress == "EC:FA:BC:4D:45:57")
+    val macAddress = devices(0).macAddress
+    assert(macAddress == "EC:FA:BC:4D:45:57")
+
+    val deviceDataJson = Source.fromResource("deviceData.json").getLines().mkString
+    val deviceData: Seq[DeviceData] = aw.deviceDataFromJson(deviceDataJson)
+    assert(deviceData.size == 2)
   }
 
 }

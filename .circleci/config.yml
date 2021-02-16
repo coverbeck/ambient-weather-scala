@@ -1,0 +1,16 @@
+version: 2.1
+workflows:
+  build:
+    jobs:
+      - build:
+          context: Builds
+jobs:
+  build:
+    docker:
+      - image: hseeberger/scala-sbt:8u222_1.3.5_2.13.1
+        auth:
+          username: coverbeck
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - run: AMBIENT_API_KEY=$AMBIENT_API_KEY AMBIENT_APP_KEY=$AMBIENT_APP_KEY sbt test
